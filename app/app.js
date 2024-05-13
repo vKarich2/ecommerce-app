@@ -3,6 +3,7 @@ import cors from "cors";
 import Stripe from "stripe";
 dotenv.config();
 import express from "express";
+import path from "path";
 
 import dbConnect from "../config/dbConnect.js";
 import { globalErrHandler, notFound } from "../middlewares/globalErrHandler.js";
@@ -99,8 +100,14 @@ app.use(express.json());
 // url encoded
 app.use(express.urlencoded({ extended: true }));
 
+// server static files
+app.use(express.static("public"));
+
 // routes
 // Home route
+app.get("/", (req, res) => {
+  res.sendFile(path.join("public", "index.html"));
+});
 
 app.use("/api/v1/users/", usersRoutes);
 app.use("/api/v1/products/", productsRouter);
